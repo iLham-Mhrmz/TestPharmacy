@@ -2,6 +2,7 @@ const Users = require('../models/userModel')
 const Payments = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Prescriptions = require('../models/prescriptionModel')
 
 const userCtrl = {
     register: async (req, res) =>{
@@ -73,6 +74,7 @@ const userCtrl = {
             return res.status(500).json({msg: err.message})
         }
     },
+    
     refreshToken: (req, res) =>{
         try {
             const rf_token = req.cookies.refreshtoken;
@@ -135,7 +137,28 @@ const userCtrl = {
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
-    }
+    },
+    addPrescription: async(req, res) => {
+        try{
+            const user = await Users.findById(req.user.id).select('name email')
+            if(!user) return res.status(400).json({msg: "User does not exist."})
+
+            const { images, phoneNumber} = req.body
+            if(!images) return res.status(400).json({msg: "No image upload"})
+
+            const {_id, name} = user;
+            const newPrescription = new Prescriptions({
+                user_id: _id, name: name, images, phoneNumber: phoneNumber
+            })
+
+
+            await newPrescription.save()
+            res.json({msg: "Prescription uploaded, we will contact you when we done reading your prescription"})
+        } catch (err){
+            return res.status(500).json({msg: err.message})
+        }
+    } 
+
  }
 
 

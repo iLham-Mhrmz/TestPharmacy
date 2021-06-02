@@ -14,10 +14,12 @@ function OrderDetails() {
             history.forEach(item =>{
                 if(item._id === params.id) setOrderDetails(item)
             })
+            console.log(orderDetails)
         }
     },[params.id, history])
 
-
+    console.log(history)
+    console.log(orderDetails)
     if(orderDetails.length === 0) return null;
     console.log(orderDetails.cart)
 

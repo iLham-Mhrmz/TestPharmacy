@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const paymentSchema = new mongoose.Schema({
     user_id: {
         type: String,
@@ -29,6 +28,10 @@ const paymentSchema = new mongoose.Schema({
     cart:{
         type: Array,
         default: []
+    },
+    total: {
+        type: Number,
+        required: true
     },
     status:{
         type: String,

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { GlobalState } from "../../../GlobalState";
-import Loading from "../utils/loading/Loading";
+// import Loading from "../utils/loading/Loading";
 import { useHistory, useParams} from "react-router-dom";
 
 const initialState = {
@@ -12,23 +12,25 @@ const initialState = {
   postal_code: "",
   bank: "",
   _id: "",
+  invoiceId: ""
 };
 
 function CheckOut() {
   const state = useContext(GlobalState);
-  const [product, setProduct] = useState(initialState);
-  const [images, setImages] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [payment] = useState(initialState);
+  // const [images, setImages] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState();
   const [isLogged] = state.userAPI.isLogged;
   const [cart, setCart] = state.userAPI.cart;
-  const [user] = state.userAPI.user;
+  // const [user] = state.userAPI.user;
   const [token] = state.token;
   const [bank, setBank] = useState();
   const [total, setTotal] = useState(0);
+  // const [invoiceId, setInvoiceId] = useState();
 
-  const history = useHistory();
-  const param = useParams();
+  const HistoryPage = useHistory();
+  const params = useParams();
 
   const banks = [
     { id: 1, name: "BCA", account: 7175667889 },
@@ -66,56 +68,56 @@ function CheckOut() {
     getTotal();
   }, [cart]);
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    try {
-      if (!isLogged) return alert("You're not an admin");
-      const file = e.target.files[0];
+  // const handleUpload = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (!isLogged) return alert("You're not an admin");
+  //     const file = e.target.files[0];
 
-      if (!file) return alert("File not exist.");
+  //     if (!file) return alert("File not exist.");
 
-      if (file.size > 1024 * 1024)
-        // 1mb
-        return alert("Size too large!");
+  //     if (file.size > 1024 * 1024)
+  //       // 1mb
+  //       return alert("Size too large!");
 
-      if (file.type !== "image/jpeg" && file.type !== "image/png")
-        // 1mb
-        return alert("File format is incorrect.");
+  //     if (file.type !== "image/jpeg" && file.type !== "image/png")
+  //       // 1mb
+  //       return alert("File format is incorrect.");
 
-      let formData = new FormData();
-      formData.append("file", file);
+  //     let formData = new FormData();
+  //     formData.append("file", file);
 
-      setLoading(true);
-      const res = await axios.post("/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: token,
-        },
-      });
-      setLoading(false);
-      setImages(res.data);
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
+  //     setLoading(true);
+  //     const res = await axios.post("/api/upload", formData, {
+  //       headers: {
+  //         "content-type": "multipart/form-data",
+  //         Authorization: token,
+  //       },
+  //     });
+  //     setLoading(false);
+  //     setImages(res.data);
+  //   } catch (err) {
+  //     alert(err.response.data.msg);
+  //   }
+  // };
 
-  const handleDestroy = async () => {
-    try {
-      if (!isLogged) return alert("You're not an admin");
-      setLoading(true);
-      await axios.post(
-        "/api/destroy",
-        { public_id: images.public_id },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      setLoading(false);
-      setImages(false);
-    } catch (err) {
-      alert(err.response.data.msg);
-    }
-  };
+  // const handleDestroy = async () => {
+  //   try {
+  //     if (!isLogged) return alert("You're not an admin");
+  //     setLoading(true);
+  //     await axios.post(
+  //       "/api/destroy",
+  //       { public_id: images.public_id },
+  //       {
+  //         headers: { Authorization: token },
+  //       }
+  //     );
+  //     setLoading(false);
+  //     setImages(false);
+  //   } catch (err) {
+  //     alert(err.response.data.msg);
+  //   }
+  // };
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -125,23 +127,29 @@ function CheckOut() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      var paymentID = ''
       if (!isLogged) return alert("You're not logged in");
 
       await axios.post(
         "/api/payment",
-        { address: address, cart: cart , bank: bank},
+        { address: address, cart: cart , bank: bank, total: total},
         {
           headers: { Authorization: token },
         }
-      );
+      ).then(res => {
+        paymentID = res.data.paymentID
+      });
       
       setCart([]);
       addToCart([]);
       alert("You have successfully placed an order.");
-      window.location.href = "/";
+      // window.location.href = `/invoice/${paymentID}`;
+      window.location.href = `/upload_receipt/${paymentID}`;
+      // HistoryPage.push(`/invoice/${invoice._id}`)
     } catch (err) {
-      alert(err.response.data.msg);
+      alert(err.response.msg);
     }
+
 
     // try {
     //     if(!isLogged) return alert("You're not an admin")
@@ -186,9 +194,9 @@ function CheckOut() {
     }
   };
 
-  const styleUpload = {
-    display: images ? "block" : "none",
-  };
+  // const styleUpload = {
+  //   display: images ? "block" : "none",
+  // };
   return (
     <div className="create_product">
       <div>
@@ -239,7 +247,7 @@ function CheckOut() {
             name="recipientName"
             id="recipientName"
             required
-            defaultValue={product.recipientName}
+            defaultValue={payment.recipientName}
             onChange={handleChangeInput}
           />
         </div>
@@ -251,7 +259,7 @@ function CheckOut() {
             name="streetName"
             id="streetName"
             required
-            defaultValue={product.streetName}
+            defaultValue={payment.streetName}
             onChange={handleChangeInput}
           />
         </div>
@@ -263,7 +271,7 @@ function CheckOut() {
             name="city"
             id="city"
             required
-            defaultValue={product.city}
+            defaultValue={payment.city}
             onChange={handleChangeInput}
           />
         </div>
@@ -275,7 +283,7 @@ function CheckOut() {
             name="state"
             id="state"
             required
-            defaultValue={product.state}
+            defaultValue={payment.state}
             onChange={handleChangeInput}
           />
         </div>

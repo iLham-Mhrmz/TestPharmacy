@@ -21,7 +21,7 @@ function BtnRender({product, deleteProduct}) {
                 isAdmin ? 
                 <>
                     <Link id="btn_buy" to="#!" 
-                    onClick={() =>deleteProduct(product._id, product.images.public_id)}>
+                    onClick={() => {if(window.confirm("Do you want to delete this product?")) deleteProduct(product._id, product.images.public_id)}}>
                         Delete
                     </Link>
                     <Link id="btn_view" to={`/edit_product/${product._id}`}>

@@ -18,5 +18,7 @@ router.patch('/addcart', auth, userCtrl.addCart)
 
 router.get('/history', auth, userCtrl.history)
 
+router.post('/prescription', auth, userCtrl.addPrescription)
 
-module.exports = router
+
+module.exports = router 

@@ -26,11 +26,7 @@ const userSchema = new mongoose.Schema({
     cart: {
         type: Array,
         default: []
-    },
-    address: {
-        type: Array,
-        default: []
-    },
+    }
 }, {
     timestamps: true
 })

@@ -14,5 +14,4 @@ router.route('/products/:id')
     .put(auth, authAdmin, productCtrl.updateProduct)
 
 
-
 module.exports = router

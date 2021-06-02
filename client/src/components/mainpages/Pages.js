@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import {Switch, Route} from 'react-router-dom'
 import Products from './products/Products'
+import Prescription from './products/Prescription'
 import DetailProduct from './detailProduct/DetailProduct'
 import Login from './auth/Login'
 import Register from './auth/Register'
@@ -13,6 +14,8 @@ import CreateProduct from './createProduct/CreateProduct'
 
 import {GlobalState} from '../../GlobalState'
 import CheckOut from './checkOut/CheckOut'
+import Invoice from './checkOut/Invoice'
+import UploadReceipt from './checkOut/UploadReceipt'
 import UserDetail from '../admin/UserDetail'
 
 
@@ -39,6 +42,9 @@ function Pages() {
 
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />
+            <Route path="/prescription" exact component={Prescription} />
+            <Route path="/invoice/:id" exact component={Invoice} />
+            <Route path="/upload_receipt/:paymentID" exact component={UploadReceipt} />
             <Route path="/userdetail" exact component={UserDetail} />
 
 

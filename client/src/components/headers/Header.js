@@ -44,7 +44,6 @@ function Header() {
         <li>
           <Link to="/category">Categories</Link>
         </li>
-        {/* <li><Link to="/dashboard">Dashboard</Link></li> */}
       </>
     );
   };
@@ -52,6 +51,13 @@ function Header() {
   const loggedRouter = () => {
     return (
       <>
+      {isAdmin ? (
+        ""
+      ) : (
+        <li>
+          <Link to="/prescription">Upload Prescription</Link>
+        </li>
+      )}
         <li>
           <Link to="/history">History</Link>
         </li>

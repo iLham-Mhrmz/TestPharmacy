@@ -2,18 +2,17 @@ import React, {useState, useContext, useEffect} from 'react'
 import axios from 'axios'
 import {GlobalState} from '../../../GlobalState'
 import Loading from '../utils/loading/Loading'
-import {Link, useParams} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 
 
-function UploadReceipt() {
+function Prescription() {
     const state = useContext(GlobalState)
     const [images, setImages] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [phoneNumber, setPhoneNUmber] = useState()
     const [isLogged] = state.userAPI.isLogged
     const [token] = state.token
-
-    const paymentID = useParams().paymentID
 
 
     const handleUpload = async e =>{
@@ -59,18 +58,22 @@ function UploadReceipt() {
         }
     }
 
+    const handleChangeInput = e =>{
+        const {value} = e.target
+        setPhoneNUmber(value)
+    }
     console.log(images)
-    console.log(paymentID)
+    console.log(phoneNumber)
     const handleSubmit = async e =>{
         e.preventDefault()
         try {
             if(!isLogged) return alert("You're not logged in")
             if(!images) return alert("No Image Upload")
-            await axios.post('/api/payment/upload_receipt', { paymentID, images: images}, {
+            await axios.post('/user/prescription', { phoneNumber, images: images}, {
                 headers: {Authorization: token}
             }).then(res => {
                 alert(res.data.msg)
-                window.location.href = `/invoice/${res.data.id}`
+                window.location.href = '/'
             })
         } catch (err) {
             alert(err.response.data.msg)
@@ -98,9 +101,9 @@ function UploadReceipt() {
 
             <form onSubmit={handleSubmit}>
                 <div className="row">
-                    <label htmlFor="paymentID">PaymentID</label>
-                    <input type="text" name="paymentID" id="paymentID" required 
-                    value={paymentID} />
+                    <label htmlFor="phoneNumber">Phone Number</label>
+                    <input type="number" name="phoneNumber" id="phoneNumber" required 
+                    placeholder="Input your phone number" onChange={handleChangeInput} />
                 </div>
 
                 <button type="submit">Upload</button>
@@ -109,4 +112,4 @@ function UploadReceipt() {
     )
 }
 
-export default UploadReceipt
+export default Prescription

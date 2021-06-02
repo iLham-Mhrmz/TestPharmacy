@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     category:{
-        type: String,
+        type: Object,
         required: true
     },
     checked:{
@@ -47,4 +47,4 @@ const productSchema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model("Products", productSchema)
+module.exports = mongoose.model('Products', productSchema) 

@@ -11,7 +11,7 @@ const initialState = {
     description: 'How to and tutorial videos of cool CSS effect, Web Design ideas,JavaScript libraries, Node.',
     stock: "",
     current_stock: 0,
-    category: '',
+    category: {},
     _id: ''
 }
 
