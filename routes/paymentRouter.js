@@ -9,5 +9,6 @@ router
   .post(auth, paymentCtrl.createPayment);
 router.get("/payment/:id", auth, paymentCtrl.getPayment);
 router.post("/payment/upload_receipt", auth, paymentCtrl.addReceipt);
+router.put("/payment/:id", auth, paymentCtrl.addReceipt);
 
 module.exports = router;

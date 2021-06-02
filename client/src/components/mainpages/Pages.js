@@ -17,6 +17,7 @@ import CheckOut from './checkOut/CheckOut'
 import Invoice from './checkOut/Invoice'
 import UploadReceipt from './checkOut/UploadReceipt'
 import UserDetail from '../admin/UserDetail'
+import Reports from '../mainpages/report/Reports'
 
 
 function Pages() {
@@ -39,6 +40,7 @@ function Pages() {
 
             <Route path="/history" exact component={isLogged ? OrderHistory : NotFound} />
             <Route path="/history/:id" exact component={isLogged ? OrderDetails : NotFound} />
+            <Route path="/report" exact component={isAdmin ? Reports : NotFound} />
 
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />
