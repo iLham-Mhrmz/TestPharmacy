@@ -53,17 +53,8 @@ class APIfeatures {
 const paymentCtrl = {
   getPayments: async (req, res) => {
     try {
-      const features = new APIfeatures(Payments.find(), req.query)
-        .filtering()
-        .sorting()
-        .paginating();
-      const payments = await features.query;
-
-      res.json({
-        //status: "success",
-        result: payments.length,
-        payments: payments,
-      });
+      const payments = await Payments.find();
+      res.json(payments);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

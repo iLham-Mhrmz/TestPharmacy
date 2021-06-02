@@ -3,6 +3,7 @@ const Payments = require("../models/paymentModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Prescriptions = require("../models/prescriptionModel");
+const sendMail = require('../lib/sendMail')
 
 const userCtrl = {
   register: async (req, res) => {
@@ -32,7 +33,7 @@ const userCtrl = {
 
       const activation_token = createActivationToken(newUser);
 
-      const url = `${CLIENT_URL}/user/activation/${activation_token}`;
+      const url = `${process.env.CLIENT_URL}/user/activation/${activation_token}`;
       sendMail(email, url, "Verify your email address");
 
       console.log(url);
@@ -51,7 +52,7 @@ const userCtrl = {
         activation_token,
         process.env.ACTIVATION_TOKEN_SECRET
       );
-
+      console.log(user)
       const { name, email, password, security_answer } = user;
 
       const check = await Users.findOne({ email });
@@ -145,6 +146,7 @@ const userCtrl = {
       res.json(user);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+      
     }
   },
   getAllUser: async (req, res) => {
@@ -197,7 +199,7 @@ const userCtrl = {
           .json({ msg: "email or security answer incorrect." });
       console.log(user);
       const access_token = createAccessToken({ id: user._id });
-      const url = `${CLIENT_URL}/user/reset/${access_token}`;
+      const url = `${process.env.CLIENT_URL}/user/reset/${access_token}`;
       console.log(url);
       sendMail(email, url, "Reset your password");
       res.json({
@@ -214,11 +216,12 @@ const userCtrl = {
       const passwordHash = await bcrypt.hash(password, 12);
 
       await Users.findOneAndUpdate(
-        { _id: req.user.id },
+        { _id: req.user._id },
         {
           password: passwordHash,
         }
       );
+
 
       res.json({ msg: "Password successfully changed!" });
     } catch (err) {
@@ -238,7 +241,7 @@ const userCtrl = {
 
       res.json({ msg: "Update Success!" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err });
     }
   },
   deleteUser: async (req, res) => {

@@ -57,7 +57,7 @@ function Reports() {
     );
   return (
     <div>
-      <Filters />
+      {/* <Filters /> */}
       <div className="history-page">
         <h2>List Reports</h2>
 

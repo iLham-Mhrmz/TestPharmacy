@@ -3,7 +3,7 @@ import { GlobalState } from "../../../GlobalState";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Filters from "./Filters";
-import LoadMore from "./LoadMore";
+// import LoadMore from "./LoadMore";
 import Loading from "../utils/loading/Loading";
 
 function OrderHistory() {
@@ -21,6 +21,7 @@ function OrderHistory() {
             headers: { Authorization: token },
           });
           setHistory(res.data);
+          
         } else {
           const res = await axios.get("/user/history", {
             headers: { Authorization: token },
@@ -31,7 +32,7 @@ function OrderHistory() {
       getHistory();
     }
   }, [token, isAdmin, setHistory]);
-
+  console.log(history)
   if (loading)
     return (
       <div>
@@ -41,7 +42,7 @@ function OrderHistory() {
 
   return (
     <div>
-      <Filters />
+      {/* <Filters /> */}
       <div className="history-page">
         <h2>History</h2>
 
@@ -68,7 +69,7 @@ function OrderHistory() {
           </tbody>
         </table>
       </div>
-      <LoadMore />
+      {/* <LoadMore /> */}
       {history.length === 0 && <Loading />}
     </div>
   );

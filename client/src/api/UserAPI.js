@@ -4,10 +4,11 @@ import axios from 'axios'
 function UserAPI(token) {
     const [isLogged, setIsLogged] = useState(false)
     const [isAdmin, setIsAdmin] = useState(false)
-    const [user, setUser] = useState()
+    const [user, setUser] = useState([])
     const [users, setUsers] = useState([])
     const [cart, setCart] = useState([])
     const [history, setHistory] = useState([])
+    const [callback, setCallback] = useState(false);
 
     useEffect(() =>{
         if(token){
@@ -22,7 +23,7 @@ function UserAPI(token) {
 
                     setCart(res.data.cart)
 
-                    setUser(res.data)
+                    setUser(res.data.name)
 
                 } catch (err) {
                     alert(err.response.data.msg)
@@ -77,7 +78,8 @@ function UserAPI(token) {
         user: [user, setUser],
         users: [users, setUsers],
         addCart: addCart,
-        history: [history, setHistory]
+        history: [history, setHistory],
+        callback: [callback, setCallback],
     }
 }
 

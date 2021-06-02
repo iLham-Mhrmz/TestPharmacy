@@ -1,30 +1,32 @@
-const router = require('express').Router()
-const userCtrl = require('../controllers/userCtrl')
-const auth = require('../middleware/auth')
-const authAdmin = require("../middleware/authAdmin")
+const router = require("express").Router();
+const userCtrl = require("../controllers/userCtrl");
+const auth = require("../middleware/auth");
+const authAdmin = require("../middleware/authAdmin");
 
-router.post('/register', userCtrl.register)
+router.post("/register", userCtrl.register);
 
-router.post('/login', userCtrl.login)
+router.post("/activation", userCtrl.activateEmail);
 
-router.get('/logout', userCtrl.logout)
+router.post("/login", userCtrl.login);
 
-router.get('/refresh_token', userCtrl.refreshToken)
+router.get("/logout", userCtrl.logout);
 
-router.get('/infor', auth,  userCtrl.getUser)
+router.get("/refresh_token", userCtrl.refreshToken);
 
-router.get('/all',  userCtrl.getAllUser)
+router.post("/forgot", userCtrl.forgotPassword);
 
-router.patch('/addcart', auth, userCtrl.addCart)
+router.post("/reset", auth, userCtrl.resetPassword);
 
-router.get('/history', auth, userCtrl.history)
+router.get("/infor", auth, userCtrl.getUser);
+
+router.get("/all", userCtrl.getAllUser);
 
 router.delete("/delete/:id", auth, authAdmin, userCtrl.deleteUser);
 
 router.patch("/update_status/:id", auth, authAdmin, userCtrl.updateUsersStatus);
 
+router.patch("/addcart", auth, userCtrl.addCart);
 
-router.post('/prescription', auth, userCtrl.addPrescription)
+router.get("/history", auth, userCtrl.history);
 
-
-module.exports = router 
+module.exports = router;
