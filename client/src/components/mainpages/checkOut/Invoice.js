@@ -20,10 +20,10 @@ function Invoice() {
                 const res = await axios.get(`/api/payment/${params.id}`, {
                     headers: {Authorization: token}
                 })
-                setInvoice(res.data.payment)
-                setCart(res.data.payment.cart)
-                setAddress(res.data.payment.address)
-                setTotal(res.data.payment.total)
+                setInvoice(res.data)
+                setCart(res.data.cart)
+                setAddress(res.data.address)
+                setTotal(res.data.total)
                 console.log(res.data)
             }
             getInvoice()

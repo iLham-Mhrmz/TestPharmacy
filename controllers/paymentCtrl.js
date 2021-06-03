@@ -144,7 +144,7 @@ const paymentCtrl = {
       await newReceipt.save();
       res.json({
         msg: "Thank you for your payment confirmation",
-        id: paymentID,
+        id: newReceipt._id,
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });

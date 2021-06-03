@@ -127,7 +127,7 @@ function CheckOut() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      var paymentID = ''
+      var id = ''
       if (!isLogged) return alert("You're not logged in");
 
       await axios.post(
@@ -137,14 +137,14 @@ function CheckOut() {
           headers: { Authorization: token },
         }
       ).then(res => {
-        paymentID = res.data.paymentID
+        id = res.data.id
       });
       
       setCart([]);
       addToCart([]);
       alert("You have successfully placed an order.");
       // window.location.href = `/invoice/${paymentID}`;
-      window.location.href = `/upload_receipt/${paymentID}`;
+      window.location.href = `/upload_receipt/${id}`;
       // HistoryPage.push(`/invoice/${invoice._id}`)
     } catch (err) {
       alert(err.response.msg);
